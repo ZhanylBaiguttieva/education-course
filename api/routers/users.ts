@@ -70,3 +70,5 @@ usersRouter.delete('/sessions', async (req, res, next) => {
     next(e);
   }
 });
+
+export default usersRouter;
