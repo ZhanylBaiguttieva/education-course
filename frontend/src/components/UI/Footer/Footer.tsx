@@ -18,7 +18,7 @@ const Footer = () => {
       >
         <Grid item xs={3} sx={{ display: isSmallScreen ? 'none' : '' }}>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            TechGear Logistics
+            Образовательные курсы
           </Typography>
         </Grid>
       </Grid>
