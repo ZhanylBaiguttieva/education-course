@@ -43,7 +43,6 @@ const UserSchema = new Schema<UserFields, UserModel, UserMethods>({
     default: 'client',
   },
   displayName: String,
-  googleId: String,
 });
 
 UserSchema.methods.checkPassword = function (password: string) {
