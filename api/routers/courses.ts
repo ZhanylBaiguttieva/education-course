@@ -2,8 +2,7 @@ import { Router } from 'express';
 import Course from '../models/Course';
 import auth, { RequestWithUser } from '../middleware/auth';
 import permit from '../middleware/permit';
-import Category from '../models/Category';
-import mongoose, { mongo, Types } from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 import { imagesUpload } from '../multer';
 
 const coursesRouter = Router();
