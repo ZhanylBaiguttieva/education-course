@@ -34,3 +34,25 @@ export interface RegisterResponse {
   message: string;
   user: User;
 }
+
+export interface Course {
+  id: string;
+  category: Category;
+  title: string;
+  price: number;
+  description: string;
+  image: string | null;
+}
+
+export interface CourseMutation {
+  category: string;
+  title: string;
+  price: string;
+  description: string;
+  image: File | string | null;
+}
+
+export interface Category {
+  id: string;
+  name: string;
+}
