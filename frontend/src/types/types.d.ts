@@ -61,3 +61,12 @@ export interface UpdateCourseArg {
   courseId: string;
   courseMutation: CourseMutation;
 }
+
+export interface CourseListened {
+  _id: string;
+  course: {
+    _id: string;
+    title: string;
+  };
+  user: string;
+}

@@ -16,7 +16,6 @@ const Courses = () => {
     dispatch(fetchAllCourses());
   }, [dispatch]);
 
-  console.log(courses);
 
   return (
     <Grid container direction="column" spacing={2}>

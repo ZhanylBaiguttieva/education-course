@@ -21,6 +21,7 @@ import {deleteCourse, fetchAllCourses} from '../containers/coursesThunk.ts';
 import {LoadingButton} from '@mui/lab';
 import CancelIcon from '@mui/icons-material/Cancel';
 import {selectDeleting} from '../containers/coursesSlice.ts';
+import {addCourseToHistory} from '../../courseHistories/containers/courseHistoryThunk.ts';
 
 
 const ImageCardMedia = styled(CardMedia)({
@@ -53,6 +54,11 @@ const CourseItem: React.FC<Props> = ({title, price, _id, image, category}) => {
     navigate(appRoutes.courses);
   };
 
+  const addCourse = async() => {
+    await dispatch(addCourseToHistory(_id));
+  };
+
+
   return (
     <Grid item sm md={6} lg={4}>
       <Card sx={{height: '100%'}}>
@@ -67,8 +73,8 @@ const CourseItem: React.FC<Props> = ({title, price, _id, image, category}) => {
         <CardActions>
           <Grid container justifyContent="space-between">
             <Grid item>
-              <IconButton component={Link} to={'/courses/' + _id}>
-                <ArrowForwardIcon/>
+              <IconButton onClick={addCourse} >
+                <ArrowForwardIcon sx={{ height: 38, width: 38 }} />
               </IconButton>
             </Grid>
             <Grid item>
