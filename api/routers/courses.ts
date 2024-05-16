@@ -10,7 +10,9 @@ const coursesRouter = Router();
 
 coursesRouter.get('/', async (req, res, next) => {
   try {
-    const courses = await Course.find();
+    const courses = await Course.find().populate(
+      'category',
+      'name');
     return res.send(courses);
   } catch (e) {
     next(e);
