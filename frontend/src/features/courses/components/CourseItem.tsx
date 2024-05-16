@@ -1,10 +1,11 @@
 
 import imageNotAvailable from '../../../assets/images/image_not_available.png';
-import {apiURL} from '../../../utils/constants.ts';
+import {apiURL, appRoutes} from '../../../utils/constants.ts';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import {
+  Button,
   Card,
   CardActions,
   CardContent,
@@ -14,6 +15,12 @@ import {
   IconButton,
   styled
 } from '@mui/material';
+import {useAppDispatch, useAppSelector} from '../../../app/hooks.ts';
+import {selectUser} from '../../users/usersSlice.ts';
+import {deleteCourse, fetchAllCourses} from '../containers/coursesThunk.ts';
+import {LoadingButton} from '@mui/lab';
+import CancelIcon from '@mui/icons-material/Cancel';
+import {selectDeleting} from '../containers/coursesSlice.ts';
 
 
 const ImageCardMedia = styled(CardMedia)({
@@ -29,11 +36,22 @@ interface Props {
 }
 
 const CourseItem: React.FC<Props> = ({title, price, id, image, category}) => {
+  const user = useAppSelector(selectUser);
+  const isDelete = useAppSelector(selectDeleting);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   let cardImage = imageNotAvailable;
 
   if (image) {
     cardImage = apiURL + '/' + image;
   }
+
+  const deleteHandler = async () => {
+    await dispatch(deleteCourse(id));
+    await dispatch(fetchAllCourses());
+    navigate(appRoutes.courses);
+  };
 
   return (
     <Grid item sm md={6} lg={4}>
@@ -42,9 +60,9 @@ const CourseItem: React.FC<Props> = ({title, price, id, image, category}) => {
         <ImageCardMedia image={cardImage} title={title}/>
         <CardContent>
           <p>
-            <strong>Category:</strong> {category}
+            <strong>Категория:</strong> {category}
           </p>
-          <strong>{price} KGS</strong>
+          <strong>{price} $ (полный курс) </strong>
         </CardContent>
         <CardActions>
           <Grid container justifyContent="space-between">
@@ -52,6 +70,28 @@ const CourseItem: React.FC<Props> = ({title, price, id, image, category}) => {
               <IconButton component={Link} to={'/courses/' + id}>
                 <ArrowForwardIcon/>
               </IconButton>
+            </Grid>
+            <Grid item>
+              {user?.role === 'admin' && (
+                <Button
+                  variant="contained"
+                  component={Link} to={`/courses/${id}/edit`}
+                >
+                  Изменить</Button>
+              )}
+            </Grid>
+            <Grid item>
+              {user?.role === 'admin' && (
+                <LoadingButton
+                  disabled={isDelete}
+                  loading={isDelete}
+                  onClick={deleteHandler}
+                  sx={{ minWidth: '29px', padding: '3px', borderRadius: '50%' }}
+                  color="error"
+                >
+                  <CancelIcon />
+                </LoadingButton>
+              )}
             </Grid>
           </Grid>
         </CardActions>

@@ -7,6 +7,7 @@ import CourseItem from './CourseItem.tsx';
 const Courses = () => {
   const dispatch = useAppDispatch();
   const courses = useAppSelector(selectCourses);
+  console.log(courses);
 
   useEffect(() => {
     dispatch(fetchAllCourses());

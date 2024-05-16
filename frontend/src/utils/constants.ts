@@ -17,4 +17,8 @@ export const appRoutes = {
   home: '/',
   register: '/register',
   login: '/login',
+  profile: '/profile',
+  adminProfile: '/adminProfile',
+  courses: '/adminProfile/courses',
+  categories: '/adminProfile/categories',
 };

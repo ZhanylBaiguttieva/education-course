@@ -1,10 +1,9 @@
-
-
-
+import Courses from '../../../features/courses/components/Courses.tsx';
 const Home = () => {
-  // return <Navigate to={appRoutes.register} />;
   return (
-    <>Hello</>
+    <>
+      <Courses />
+    </>
   );
 };
 
