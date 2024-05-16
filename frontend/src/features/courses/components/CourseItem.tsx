@@ -28,14 +28,14 @@ const ImageCardMedia = styled(CardMedia)({
   paddingTop: '56.25%',
 });
 interface Props {
-  id: string;
+  _id: string;
   title: string;
   price: number;
   image: string | null;
   category: string;
 }
 
-const CourseItem: React.FC<Props> = ({title, price, id, image, category}) => {
+const CourseItem: React.FC<Props> = ({title, price, _id, image, category}) => {
   const user = useAppSelector(selectUser);
   const isDelete = useAppSelector(selectDeleting);
   const dispatch = useAppDispatch();
@@ -48,7 +48,7 @@ const CourseItem: React.FC<Props> = ({title, price, id, image, category}) => {
   }
 
   const deleteHandler = async () => {
-    await dispatch(deleteCourse(id));
+    await dispatch(deleteCourse(_id));
     await dispatch(fetchAllCourses());
     navigate(appRoutes.courses);
   };
@@ -67,7 +67,7 @@ const CourseItem: React.FC<Props> = ({title, price, id, image, category}) => {
         <CardActions>
           <Grid container justifyContent="space-between">
             <Grid item>
-              <IconButton component={Link} to={'/courses/' + id}>
+              <IconButton component={Link} to={'/courses/' + _id}>
                 <ArrowForwardIcon/>
               </IconButton>
             </Grid>
@@ -75,7 +75,7 @@ const CourseItem: React.FC<Props> = ({title, price, id, image, category}) => {
               {user?.role === 'admin' && (
                 <Button
                   variant="contained"
-                  component={Link} to={`/courses/${id}/edit`}
+                  component={Link} to={appRoutes.adminCoursesEdit.replace(':id',_id)}
                 >
                   Изменить</Button>
               )}

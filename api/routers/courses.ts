@@ -3,7 +3,7 @@ import Course from '../models/Course';
 import auth, { RequestWithUser } from '../middleware/auth';
 import permit from '../middleware/permit';
 import Category from '../models/Category';
-import mongoose, { mongo } from 'mongoose';
+import mongoose, { mongo, Types } from 'mongoose';
 import { imagesUpload } from '../multer';
 
 const coursesRouter = Router();
@@ -21,9 +21,20 @@ coursesRouter.get('/', async (req, res, next) => {
 
 coursesRouter.get('/:id', async (req, res, next) => {
   try {
-    const params = req.params.id;
-    const course = await Course.findById(params);
-    return res.send({ message: 'Поиск по 1 курсу:', course });
+    let _id: Types.ObjectId;
+    try {
+      _id = new Types.ObjectId(req.params.id);
+    } catch {
+      return res.status(404).send({ error: 'Wrong ObjectId!' });
+    }
+    const course = await Course.findById(_id).populate(
+      'category');
+
+    if (!course) {
+      return res.status(404).send({ error: 'Not found!' });
+    }
+
+    res.send(course);
   } catch (e) {
     next(e);
   }
@@ -37,7 +48,7 @@ coursesRouter.post(
   async (req: RequestWithUser, res, next) => {
     try {
       const courseData = {
-        category: Category,
+        category: req.body.category,
         title: req.body.title,
         price: parseFloat(req.body.price),
         description: req.body.description,
@@ -58,7 +69,7 @@ coursesRouter.post(
   },
 );
 
-coursesRouter.delete('/:id/delete', auth, permit('super'), async (req, res, next) => {
+coursesRouter.delete('/:id/delete', auth, permit('admin'), async (req, res, next) => {
   try {
     const _id = req.params.id;
     const course = await Course.findByIdAndDelete(_id);
@@ -70,4 +81,43 @@ coursesRouter.delete('/:id/delete', auth, permit('super'), async (req, res, next
     next(e);
   }
 });
+
+coursesRouter.patch(
+  '/:id',
+  auth,
+  permit('admin'),
+  imagesUpload.single('image'),
+  async (req: RequestWithUser, res, next) => {
+    try {
+      let image: string | undefined | null = undefined;
+      if (req.body.image === 'delete') {
+        image = null;
+      } else if (req.file) {
+        image = req.file.filename;
+      }
+      const result = await Course.updateOne(
+        { _id: req.params._id },
+        {
+          $set: {
+            category: req.body.category,
+            title: req.body.title,
+            price: parseFloat(req.body.price),
+            description: req.body.description,
+            image: image,
+          },
+        },
+      );
+
+      if (result.matchedCount === 0) {
+        return res.status(404).send({ message: 'Not found' });
+      }
+      return res.send({ message: 'ok!' });
+    } catch (e) {
+      if (e instanceof mongoose.Error.ValidationError) {
+        return res.status(422).send(e);
+      }
+      next(e);
+    }
+  },
+);
 export default coursesRouter;

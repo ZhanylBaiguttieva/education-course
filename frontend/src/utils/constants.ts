@@ -21,4 +21,6 @@ export const appRoutes = {
   adminProfile: '/adminProfile',
   courses: '/adminProfile/courses',
   categories: '/adminProfile/categories',
+  adminCoursesAdd: '/adminProfile/courses/new',
+  adminCoursesEdit: '/adminProfile/courses/:id',
 };

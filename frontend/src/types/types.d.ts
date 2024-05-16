@@ -36,11 +36,11 @@ export interface RegisterResponse {
 }
 
 export interface Course {
-  id: string;
+  _id: string;
   category: Category;
   title: string;
   price: number;
-  description: string;
+  description?: string;
   image: string | null;
 }
 
@@ -48,11 +48,16 @@ export interface CourseMutation {
   category: string;
   title: string;
   price: string;
-  description: string;
+  description?: string;
   image: File | string | null;
 }
 
 export interface Category {
-  id: string;
+  _id: string;
   name: string;
+}
+
+export interface UpdateCourseArg {
+  courseId: string;
+  courseMutation: CourseMutation;
 }

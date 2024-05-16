@@ -1,28 +1,28 @@
-import {CourseMutation as Category} from '../../../types/types';
+import {Category} from '../../../types/types';
 import {createSlice} from '@reduxjs/toolkit';
 import {fetchCategories} from './categoriesThunk.ts';
 import {RootState} from '../../../app/store.ts';
 
 interface CategoriesState {
-  items: Category[];
+  categories: Category[];
   fetching: boolean;
 }
 
 const initialState: CategoriesState = {
-  items: [],
+  categories: [],
   fetching: false,
 };
 
-export const categoriesSlice = createSlice({
+ const categoriesSlice = createSlice({
   name: 'categories',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchCategories.pending, (state) => {
       state.fetching = true;
-    }).addCase(fetchCategories.fulfilled, (state, {payload: categories}) => {
+    }).addCase(fetchCategories.fulfilled, (state, {payload}) => {
       state.fetching = false;
-      state.items = categories;
+      state.categories = payload;
     }).addCase(fetchCategories.rejected, (state) => {
       state.fetching = false;
     });
@@ -31,5 +31,5 @@ export const categoriesSlice = createSlice({
 
 export const categoriesReducer = categoriesSlice.reducer;
 
-export const selectCategories = (state: RootState) => state.categories.items;
+export const categoriesState = (state: RootState) => state.categories.categories;
 export const selectCategoriesFetching = (state: RootState) => state.categories.fetching;

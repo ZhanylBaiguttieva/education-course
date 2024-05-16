@@ -8,6 +8,9 @@ import Login from '../features/users/containers/Login.tsx';
 import UserProfile from '../features/users/components/UserProfile.tsx';
 import Courses from '../features/courses/components/Courses.tsx';
 import AdminProfile from '../features/users/components/AdminProfile.tsx';
+import Categories from '../features/categories/components/Categories.tsx';
+import NewCourse from '../features/courses/components/NewCourse.tsx';
+import EditCourse from '../features/courses/components/EditCourse.tsx';
 
 
 export const router = createBrowserRouter([
@@ -44,8 +47,16 @@ export const router = createBrowserRouter([
             element: <Courses/>,
           },
           {
-            path: appRoutes.courses,
-            element: <Courses/>,
+            path: appRoutes.categories,
+            element: <Categories />,
+          },
+          {
+            path: appRoutes.adminCoursesAdd,
+            element: <NewCourse />,
+          },
+          {
+            path: appRoutes.adminCoursesEdit,
+            element: <EditCourse />,
           },
         ]
       },
