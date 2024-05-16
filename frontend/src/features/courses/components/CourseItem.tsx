@@ -3,7 +3,6 @@ import imageNotAvailable from '../../../assets/images/image_not_available.png';
 import {apiURL, appRoutes} from '../../../utils/constants.ts';
 import React from 'react';
 import {Link, useNavigate} from 'react-router-dom';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import {
   Button,
   Card,
@@ -12,7 +11,6 @@ import {
   CardHeader,
   CardMedia,
   Grid,
-  IconButton,
   styled
 } from '@mui/material';
 import {useAppDispatch, useAppSelector} from '../../../app/hooks.ts';
@@ -73,9 +71,11 @@ const CourseItem: React.FC<Props> = ({title, price, _id, image, category}) => {
         <CardActions>
           <Grid container justifyContent="space-between">
             <Grid item>
-              <IconButton onClick={addCourse} >
-                <ArrowForwardIcon sx={{ height: 38, width: 38 }} />
-              </IconButton>
+              <Button
+                variant="contained"
+                onClick={addCourse} >
+                Выбрать
+              </Button>
             </Grid>
             <Grid item>
               {user?.role === 'admin' && (
