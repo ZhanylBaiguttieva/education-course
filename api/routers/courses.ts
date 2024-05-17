@@ -52,6 +52,8 @@ coursesRouter.post(
         price: parseFloat(req.body.price),
         description: req.body.description,
         image:  req.file ? req.file.filename : null,
+        format: req.body.format,
+        status: req.body.status,
       };
 
       const course = new Course(courseData);
@@ -103,6 +105,8 @@ coursesRouter.patch(
             price: parseFloat(req.body.price),
             description: req.body.description,
             image: image,
+            format: req.body.format,
+            status: req.body.status,
           },
         },
       );

@@ -17,7 +17,7 @@ const dropCollection = async (
 const run = async () => {
   await mongoose.connect(config.mongoose.db);
   const db = mongoose.connection;
-  const collections = ['users'];
+  const collections = ['users', 'categories', 'courses'];
 
   for (const collectionName of collections) {
     await dropCollection(db, collectionName);
@@ -53,9 +53,12 @@ const run = async () => {
   await Course.create(
     {
       category: categories[0]._id,
-      title: 'Математика 1-3 класс',
+      title: 'Математика 3 класс',
       price: 500,
+      description: 'Дети учатся применять таблицу умножения, внетабличные деление и умножение, изучают дроби и доли, решают более сложные примеры и задачи.',
       image: 'fixtures/images/math3.png',
+      format: 'Онлайн',
+      status: 'Идет набор',
     },
     {
       category: categories[1]._id,
@@ -64,6 +67,8 @@ const run = async () => {
       description: 'В программму курса входят начальные геометрические понятия. ' +
         'Точки, прямые, лучи и отрезки. Также обучаем фигурам и основным формулам.',
       image: 'fixtures/images/geom5.png',
+      format: 'Оффлайн',
+      status: 'Новый',
     },
     {
       category: categories[2]._id,
@@ -71,6 +76,8 @@ const run = async () => {
       price: 1000,
       description: "В 11 классе изучаются: электродинамика (окончание), оптика, квантовая физика и элементы астрофизики, методы научного познания. ",
       image: 'fixtures/images/phiz11.png',
+      format: 'Оффлайн',
+      status: 'В процессе',
     },
   );
 

@@ -43,6 +43,9 @@ const Courses = () => {
             price={course.price}
             image={course.image}
             category={course.category.name}
+            description={course.description}
+            format={course.format}
+            status={course.status}
           />
         ))}
       </Grid>

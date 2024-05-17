@@ -26,6 +26,16 @@ const CourseSchema = new Schema({
   },
   description: String,
   image: String,
+  format: {
+    type: String,
+    required: true,
+    enum:['Онлайн', 'Оффлайн']
+  },
+  status: {
+    type: String,
+    required: true,
+    enum: ['Новый', 'Идет набор', 'В процессе']
+  }
 
 });
 

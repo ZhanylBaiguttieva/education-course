@@ -42,6 +42,8 @@ export interface Course {
   price: number;
   description?: string;
   image: string | null;
+  format: string,
+  status: string,
 }
 
 export interface CourseMutation {
@@ -50,6 +52,8 @@ export interface CourseMutation {
   price: string;
   description?: string;
   image: File | string | null;
+  format: string,
+  status: string,
 }
 
 export interface Category {

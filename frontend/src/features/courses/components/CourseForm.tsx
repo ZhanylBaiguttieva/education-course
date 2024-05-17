@@ -1,8 +1,19 @@
 import {CourseMutation} from '../../../types/types';
 import {useAppDispatch, useAppSelector} from '../../../app/hooks.ts';
 import {selectCourseCreating} from '../containers/coursesSlice.ts';
-import {useEffect, useMemo, useState} from 'react';
-import { Box, Container, Grid, TextField, Typography, MenuItem } from '@mui/material';
+import {ChangeEvent, useEffect, useMemo, useState} from 'react';
+import {
+  Box,
+  Container,
+  Grid,
+  TextField,
+  Typography,
+  MenuItem,
+  InputLabel,
+  FormControl,
+  Select,
+  SelectChangeEvent
+} from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import {categoriesState} from '../../categories/containers/categoriesSlice.ts';
 import {fetchCategories} from '../../categories/containers/categoriesThunk.ts';
@@ -22,6 +33,8 @@ const initialState: CourseMutation = {
   description: '',
   price: '',
   image: null,
+  format: '',
+  status: '',
 };
 const CourseForm: React.FC<Props> = ({onSubmit,
   isEdit = false, initialCourse = initialState,existingImage}) => {
@@ -36,11 +49,13 @@ const CourseForm: React.FC<Props> = ({onSubmit,
     dispatch(fetchCategories());
   }, [dispatch]);
 
-  const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const {name, value} = event.target;
+  const inputChangeHandler = (
+    event: ChangeEvent<{ name?: string; value: unknown }> | SelectChangeEvent
+  ) => {
+    const { name, value } = event.target;
 
     setState((prevState) => {
-      return {...prevState, [name]: value};
+      return { ...prevState, [name as string]: value };
     });
   };
 
@@ -155,6 +170,37 @@ const CourseForm: React.FC<Props> = ({onSubmit,
                     name="price"
                     required
                   />
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl fullWidth required>
+                    <InputLabel id="format-label">Формат</InputLabel>
+                    <Select
+                      labelId="format-label"
+                      id="format"
+                      value={state.format}
+                      onChange={inputChangeHandler}
+                      name="format"
+                    >
+                      <MenuItem value="Онлайн">Онлайн</MenuItem>
+                      <MenuItem value="Оффлайн">Оффлайн</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl fullWidth required>
+                    <InputLabel id="status-label">Статус</InputLabel>
+                    <Select
+                      labelId="status-label"
+                      id="status"
+                      value={state.status}
+                      onChange={inputChangeHandler}
+                      name="status"
+                    >
+                      <MenuItem value="Новый">Новый</MenuItem>
+                      <MenuItem value="Идет набор">Идет набор</MenuItem>
+                      <MenuItem value="В процессе">В процессе</MenuItem>
+                    </Select>
+                  </FormControl>
                 </Grid>
                 <Grid item xs={12}>
                   <FileInput

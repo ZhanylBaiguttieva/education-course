@@ -11,7 +11,7 @@ import {
   CardHeader,
   CardMedia,
   Grid,
-  styled
+  styled, Typography
 } from '@mui/material';
 import {useAppDispatch, useAppSelector} from '../../../app/hooks.ts';
 import {selectUser} from '../../users/usersSlice.ts';
@@ -32,9 +32,12 @@ interface Props {
   price: number;
   image: string | null;
   category: string;
+  description?: string;
+  format: string;
+  status: string
 }
 
-const CourseItem: React.FC<Props> = ({title, price, _id, image, category}) => {
+const CourseItem: React.FC<Props> = ({title, price, _id, image, category,description, format, status}) => {
   const user = useAppSelector(selectUser);
   const isDelete = useAppSelector(selectDeleting);
   const dispatch = useAppDispatch();
@@ -64,19 +67,30 @@ const CourseItem: React.FC<Props> = ({title, price, _id, image, category}) => {
         <ImageCardMedia image={cardImage} title={title}/>
         <CardContent>
           <p>
-            <strong>Категория:</strong> {category}
+            <strong>Группа:</strong> {category}
           </p>
-          <strong>{price} $ (полный курс) </strong>
+          <strong>Стоимость: {price} $ (полный курс) </strong>
+          <Typography>
+            <strong>Формат обучения:</strong> {format}
+          </Typography>
+          <Typography>
+            <strong>Статус:</strong> {status}
+          </Typography>
+          <Typography>
+            <strong>Описание:</strong> {description}
+          </Typography>
         </CardContent>
         <CardActions>
           <Grid container justifyContent="space-between">
-            <Grid item>
-              <Button
-                variant="contained"
-                onClick={addCourse} >
-                Выбрать
-              </Button>
-            </Grid>
+            {user?.role ==='client' && (
+              <Grid item>
+                <Button
+                  variant="contained"
+                  onClick={addCourse} >
+                  Выбрать
+                </Button>
+              </Grid>
+            )}
             <Grid item>
               {user?.role === 'admin' && (
                 <Button
