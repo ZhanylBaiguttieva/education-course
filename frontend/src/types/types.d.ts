@@ -61,6 +61,10 @@ export interface Category {
   name: string;
 }
 
+export interface CategoryMutation {
+  name: string;
+}
+
 export interface UpdateCourseArg {
   courseId: string;
   courseMutation: CourseMutation;

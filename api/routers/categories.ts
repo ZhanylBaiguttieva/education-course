@@ -3,6 +3,8 @@ import Category from '../models/Category';
 import mongoose, { mongo } from 'mongoose';
 import auth, { RequestWithUser } from '../middleware/auth';
 import permit from '../middleware/permit';
+import Course from '../models/Course';
+import coursesRouter from './courses';
 
 const categoriesRouter = Router();
 
@@ -22,7 +24,7 @@ categoriesRouter.post(
   async (req: RequestWithUser, res, next) => {
     try {
       const categoryData = {
-        title: req.body.title,
+        name: req.body.name,
       };
 
       const category = new Category(categoryData);
@@ -42,4 +44,17 @@ categoriesRouter.post(
     }
   },
 );
+
+categoriesRouter.delete('/:id/delete', auth, permit('admin'), async (req, res, next) => {
+  try {
+    const _id = req.params.id;
+    const category = await Category.findByIdAndDelete(_id);
+    if (!category) {
+      return res.status(404).send({ message: 'Категория не найдена' });
+    }
+    return res.send({ message: 'Категория успешно удалена', category });
+  } catch (e) {
+    next(e);
+  }
+});
 export default categoriesRouter;
